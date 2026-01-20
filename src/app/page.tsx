@@ -1,65 +1,99 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+import { FeaturedBooks } from "@/components/FeaturedBooks";
+
+export const metadata: Metadata = {
+  title: "KCSE Revision Books",
+  description:
+    "KCSE revision made simple and visual with the Octopus Revision Method and Topnotch Books by Thaddeus Mbaluka.",
+  openGraph: {
+    title: "KCSE Revision Books",
+    description:
+      "Discover KCSE revision books and resources built around the Octopus Revision Method for calm, structured study.",
+  },
+};
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+    <>
+      <section className="section-card">
+        <p className="text-[0.75rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          KCSE REVISION · OCTOPUS METHOD
+        </p>
+        <h2 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+          KCSE revision made simple, visual, and deeply memorable.
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          The Octopus Revision Method turns dense past papers into clear, visual study
+          paths—so students focus on what matters, not on fighting the notes.
+        </p>
+
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          Designed for candidates who want structured, exam-aligned practice without the
+          overwhelm, guesswork, or noisy study hacks.
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-3">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/shop"
+            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+            Shop Books
           </a>
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/method"
+            className="inline-flex items-center justify-center rounded-full border border-border-subtle px-4 py-2 text-xs font-medium tracking-wide text-muted-foreground transition-colors hover:border-slate-900/40 hover:text-foreground dark:hover:border-slate-100/60"
           >
-            Documentation
+            Learn the Method
           </a>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <FeaturedBooks />
+
+      <section className="section-card">
+        <div className="grid gap-5 sm:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] sm:items-start">
+          <div>
+            <h2 className="section-heading">Meet Thaddeus Mbaluka</h2>
+            <p className="muted">
+              Thaddeus Mbaluka is an educator and author focused on making KCSE revision
+              structured, visual, and predictable for candidates across Kenya.
+            </p>
+
+            <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              <p>
+                Drawing on years of classroom experience and analysis of past papers, he
+                developed the Octopus Revision Method to help students see patterns, not
+                just pages of questions. His books are designed to guide revision lesson
+                by lesson, topic by topic.
+              </p>
+              <p>
+                Each title balances exam rigour with calm, readable layouts—so teachers
+                and students can focus on understanding, not on wrestling with materials.
+              </p>
+            </div>
+
+            <a
+              href="/about"
+              className="mt-5 inline-flex text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
+              Read the full story on the About page
+            </a>
+          </div>
+
+          <div className="mx-auto hidden w-32 sm:block md:w-40">
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-border-subtle bg-muted">
+              <Image
+                src="/people/thaddeus-mbaluka.jpg"
+                alt="Portrait of Thaddeus Mbaluka"
+                fill
+                className="object-cover"
+                sizes="160px"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

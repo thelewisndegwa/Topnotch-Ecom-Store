@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
+/**
+ * Design tokens
+ * A light, minimal, academic-inspired palette and typography scale.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc; /* subtle paper-like background */
+  --foreground: #020617; /* slate-950 */
+  --muted: #e2e8f0; /* slate-200 */
+  --muted-foreground: #475569; /* slate-600 */
+  --border-subtle: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617; /* slate-950 */
+    --foreground: #e2e8f0; /* slate-200 */
+    --muted: #0f172a; /* slate-900 */
+    --muted-foreground: #cbd5f5; /* soft cool gray/blue */
+    --border-subtle: #1e293b;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border-subtle: var(--border-subtle);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/**
+ * Layout helpers
+ */
+.page-shell {
+  @apply min-h-screen bg-background text-foreground;
+}
+
+.page-grid {
+  @apply mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 py-10 sm:px-8 lg:px-12 lg:py-16;
+}
+
+.page-header {
+  @apply border-b border-border-subtle pb-6 sm:pb-8;
+}
+
+.page-main {
+  @apply grid gap-10 md:grid-cols-[2fr,1.1fr];
+}
+
+.section-card {
+  @apply rounded-xl border border-border-subtle bg-white/80 p-5 sm:p-6 dark:bg-slate-900/70;
+}
+
+.section-heading {
+  @apply mb-3 text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100;
+}
+
+.muted {
+  @apply text-sm leading-relaxed text-muted-foreground;
+}
+
+.divider {
+  @apply my-6 h-px bg-border-subtle;
 }
