@@ -33,7 +33,7 @@ export default function ShopPage() {
             subject={book.subject}
             form={book.form}
             priceKes={book.price}
-            href={`/books/${book.slug}`}
+            href={`/shop/${book.slug}`}
           />
         ))}
       </div>

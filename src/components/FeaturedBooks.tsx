@@ -32,7 +32,7 @@ export function FeaturedBooks() {
             subject={book.subject}
             form={book.form}
             priceKes={book.price}
-            href={`/books/${book.slug}`}
+            href={`/shop/${book.slug}`}
           />
         ))}
       </div>
