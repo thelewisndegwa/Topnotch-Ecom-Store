@@ -84,7 +84,7 @@ export default function Home() {
           <div className="mx-auto hidden w-32 sm:block md:w-40">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-border-subtle bg-muted">
               <Image
-                src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=400"
+                src="https://images.pexels.com/photos/6326064/pexels-photo-6326064.jpeg?auto=compress&cs=tinysrgb&w=400"
                 alt="Portrait of Thaddeus Mbaluka"
                 fill
                 className="object-cover"

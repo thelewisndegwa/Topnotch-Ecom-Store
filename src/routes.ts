@@ -59,6 +59,12 @@ export const apiRoutes: RouteDefinition[] = [
     description: 'Get all videos',
   },
   {
+    path: 'youtube',
+    version: 'v1',
+    methods: ['GET'],
+    description: 'Fetch videos from Topnotch Online TV YouTube channel',
+  },
+  {
     path: 'health',
     version: 'v1',
     methods: ['GET'],
@@ -69,6 +75,24 @@ export const apiRoutes: RouteDefinition[] = [
     version: 'v1',
     methods: ['GET'],
     description: 'List all available API routes',
+  },
+  {
+    path: 'orders',
+    version: 'v1',
+    methods: ['GET', 'POST'],
+    description: 'Create and manage orders',
+  },
+  {
+    path: 'payments/mpesa',
+    version: 'v1',
+    methods: ['GET', 'POST'],
+    description: 'M-Pesa payment initiation and status',
+  },
+  {
+    path: 'payments/[id]',
+    version: 'v1',
+    methods: ['GET'],
+    description: 'Get payment status by ID',
   },
 ];
 

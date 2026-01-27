@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { books } from "@/data/books";
+import { AddToCartButton } from "@/components/AddToCartButton";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
   return books.map((book) => ({ slug: book.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const book = books.find((b) => b.slug === params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const book = books.find((b) => b.slug === slug);
 
   if (!book) {
     return {
@@ -31,13 +33,14 @@ export function generateMetadata({ params }: PageProps): Metadata {
     openGraph: {
       title,
       description: book.description,
-      type: "product",
+      type: "website",
     },
   };
 }
 
-export default function BookDetailPage({ params }: PageProps) {
-  const book = books.find((b) => b.slug === params.slug);
+export default async function BookDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const book = books.find((b) => b.slug === slug);
 
   if (!book) {
     return notFound();
@@ -45,26 +48,21 @@ export default function BookDetailPage({ params }: PageProps) {
 
   return (
     <article className="section-card">
-      <div className="grid gap-8 md:grid-cols-[1.1fr,1.4fr]">
+      <div className="grid gap-8 md:grid-cols-[280px,1fr]">
         {/* Cover */}
         <div className="space-y-4">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-border-subtle bg-muted">
+          <div className="relative aspect-[3/4] w-full max-w-[280px] mx-auto md:mx-0 overflow-hidden rounded-lg border border-border-subtle bg-muted">
             <Image
               src={book.coverImagePath}
               alt={book.title}
               fill
               className="object-cover"
-              sizes="(min-width: 1024px) 260px, (min-width: 640px) 40vw, 100vw"
+              sizes="(min-width: 768px) 280px, 100vw"
+              priority
             />
           </div>
 
-          <button
-            type="button"
-            disabled
-            className="inline-flex w-full items-center justify-center rounded-full border border-dashed border-border-subtle bg-muted px-4 py-2 text-xs font-semibold tracking-wide text-muted-foreground opacity-80"
-          >
-            Buy Now · Coming Soon
-          </button>
+          <AddToCartButton book={book} variant="full-width" />
         </div>
 
         {/* Details */}

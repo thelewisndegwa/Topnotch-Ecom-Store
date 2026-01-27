@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookCard } from "@/components/BookCard";
+import { BookCardWithCart } from "@/components/BookCardWithCart";
 import { books } from "@/data/books";
 
 export function FeaturedBooks() {
@@ -25,15 +25,7 @@ export function FeaturedBooks() {
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         {booksToShow.map((book) => (
-          <BookCard
-            key={book.slug}
-            coverSrc={book.coverImagePath}
-            title={book.title}
-            subject={book.subject}
-            form={book.form}
-            priceKes={book.price}
-            href={`/shop/${book.slug}`}
-          />
+          <BookCardWithCart key={book.slug} book={book} />
         ))}
       </div>
 

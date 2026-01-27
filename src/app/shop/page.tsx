@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookCard } from "@/components/BookCard";
+import { BookCardWithCart } from "@/components/BookCardWithCart";
 import { books } from "@/data/books";
 
 export const metadata: Metadata = {
@@ -14,6 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default function ShopPage() {
+  if (!books || books.length === 0) {
+    return (
+      <section className="section-card">
+        <p>No books available.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="section-card">
       <header className="mb-6 space-y-2">
@@ -26,15 +34,7 @@ export default function ShopPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {books.map((book) => (
-          <BookCard
-            key={book.slug}
-            coverSrc={book.coverImagePath}
-            title={book.title}
-            subject={book.subject}
-            form={book.form}
-            priceKes={book.price}
-            href={`/shop/${book.slug}`}
-          />
+          <BookCardWithCart key={book.slug} book={book} />
         ))}
       </div>
     </section>

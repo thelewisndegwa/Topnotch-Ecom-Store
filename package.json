@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "next dev -p 3001",
+    "dev:server": "tsx watch src/server.ts",
     "build": "next build",
     "start": "tsx src/server.ts",
     "lint": "eslint"
