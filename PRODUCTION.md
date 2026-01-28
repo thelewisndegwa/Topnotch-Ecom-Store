@@ -1,12 +1,12 @@
 # Production Setup Guide
 
-This document outlines the production-ready features implemented in the backend.
+This document outlines the production-ready features implemented for Next.js/Vercel deployment.
 
 ## Features
 
-### 1. CORS Configuration (`src/lib/cors.ts`)
+### 1. CORS Configuration (Next.js Middleware)
 
-Production-ready CORS middleware with:
+Production-ready CORS handling via Next.js middleware (`src/middleware.ts`):
 - Environment-based origin whitelisting
 - Configurable allowed methods and headers
 - Preflight request handling
@@ -20,26 +20,21 @@ Production-ready CORS middleware with:
 - `CORS_EXPOSE_HEADERS`: Headers exposed to the client
 - `CORS_MAX_AGE`: Preflight cache duration in seconds (default: 86400)
 
-### 2. Security Headers (`src/lib/security.ts`)
+### 2. Security Headers (Next.js Middleware)
 
-Comprehensive security headers including:
+Comprehensive security headers via Next.js middleware:
 - **X-Content-Type-Options**: Prevents MIME type sniffing
 - **X-Frame-Options**: Prevents clickjacking (DENY)
 - **X-XSS-Protection**: Legacy XSS protection
 - **Content-Security-Policy**: Configurable CSP
 - **Referrer-Policy**: Controls referrer information
 - **Permissions-Policy**: Controls browser features
-- **Strict-Transport-Security**: HSTS for HTTPS (production only)
-- **Expect-CT**: Certificate Transparency
 - **X-DNS-Prefetch-Control**: DNS prefetch control
 
 **Environment Variables:**
 - `CSP_HEADER`: Custom Content Security Policy
 - `REFERRER_POLICY`: Referrer policy (default: strict-origin-when-cross-origin)
 - `PERMISSIONS_POLICY`: Permissions policy string
-- `HSTS_MAX_AGE`: HSTS max age in seconds (default: 31536000)
-- `HSTS_INCLUDE_SUBDOMAINS`: Include subdomains in HSTS (default: true)
-- `HSTS_PRELOAD`: Enable HSTS preload (default: false)
 
 ### 3. Structured Logging (`src/lib/logger.ts`)
 
@@ -57,7 +52,7 @@ Production-ready logging system with:
 - Automatic request ID generation and tracking
 - Duration tracking for performance monitoring
 - Error context preservation
-- Production-optimized JSON output for log aggregation tools
+- Production-optimized JSON output for log aggregation tools (Vercel Logs)
 
 ### 4. Enhanced Health Check (`src/app/api/v1/health/route.ts`)
 
@@ -98,23 +93,11 @@ Comprehensive health check endpoint with:
 }
 ```
 
-### 5. Rate Limiting (`src/lib/security.ts`)
-
-Basic rate limiting middleware:
-- Configurable window and max requests
-- Per-IP tracking
-- Automatic cleanup of expired entries
-- Health check endpoint excluded
-
-**Environment Variables:**
-- `RATE_LIMIT_WINDOW_MS`: Time window in milliseconds (default: 900000 = 15 minutes)
-- `RATE_LIMIT_MAX_REQUESTS`: Maximum requests per window (default: 100)
-
 ## Configuration
 
 ### Environment Variables
 
-Copy `.env.example` to `.env` and configure:
+Set these in your Vercel project settings or `.env.local`:
 
 ```bash
 # Required in production
@@ -122,15 +105,15 @@ ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
 
 # Optional - customize as needed
 LOG_LEVEL=INFO
-RATE_LIMIT_MAX_REQUESTS=100
 CORS_MAX_AGE=86400
+CSP_HEADER=default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
 ```
 
 ### Configuration Validation
 
-The server validates required configuration on startup. In production, `ALLOWED_ORIGINS` must be set.
+The configuration validates required settings. In production, `ALLOWED_ORIGINS` should be set for proper CORS handling.
 
-## Production Deployment
+## Production Deployment (Vercel)
 
 ### 1. Build the Application
 
@@ -140,13 +123,18 @@ npm run build
 
 ### 2. Set Environment Variables
 
-Ensure all required environment variables are set in your production environment.
+In Vercel dashboard:
+1. Go to your project settings
+2. Navigate to "Environment Variables"
+3. Add all required variables
 
-### 3. Start the Server
+### 3. Deploy
 
-```bash
-npm start
-```
+Vercel automatically:
+- Builds the application
+- Runs the build command
+- Deploys to production
+- Handles serverless function execution
 
 ### 4. Health Check
 
@@ -159,10 +147,10 @@ curl https://yourdomain.com/api/v1/health
 
 ### Logs
 
-In production, logs are output as structured JSON, suitable for:
-- Log aggregation tools (ELK, Datadog, etc.)
-- Cloud logging services (CloudWatch, Stackdriver, etc.)
-- Log analysis platforms
+In Vercel production, logs are available in:
+- Vercel Dashboard → Logs tab
+- Structured JSON format for log aggregation
+- Real-time log streaming
 
 ### Metrics
 
@@ -173,15 +161,15 @@ The health check endpoint provides:
 
 ### Request Tracking
 
-Every request includes a `X-Request-Id` header for distributed tracing.
+Every request can include a `X-Request-Id` header for distributed tracing (handled by middleware).
 
 ## Security Best Practices
 
 1. **Always set `ALLOWED_ORIGINS` in production** - Never use wildcard (`*`) in production
-2. **Use HTTPS** - Required for HSTS and secure cookies
+2. **Use HTTPS** - Vercel automatically provides HTTPS
 3. **Review CSP policy** - Customize based on your application needs
-4. **Monitor rate limits** - Adjust based on your traffic patterns
-5. **Regular security audits** - Keep dependencies updated
+4. **Regular security audits** - Keep dependencies updated
+5. **Use Vercel's built-in security features** - DDoS protection, edge network, etc.
 
 ## Troubleshooting
 
@@ -190,15 +178,26 @@ Every request includes a `X-Request-Id` header for distributed tracing.
 - Verify `ALLOWED_ORIGINS` includes your frontend domain
 - Check that credentials are properly configured
 - Review browser console for specific CORS errors
+- Ensure middleware is running (check Vercel logs)
 
 ### High Memory Usage
 
 - Monitor `/api/v1/health` endpoint
-- Review memory metrics
-- Consider increasing server resources if consistently > 80%
+- Review memory metrics in Vercel dashboard
+- Check serverless function logs for memory issues
+- Consider optimizing API routes if needed
 
-### Rate Limiting Issues
+### Build Failures
 
-- Adjust `RATE_LIMIT_MAX_REQUESTS` based on legitimate traffic
-- Review logs for rate limit violations
-- Consider per-endpoint rate limits for high-traffic routes
+- Check that all Express/server dependencies are removed
+- Verify TypeScript compilation: `npx tsc --noEmit`
+- Review build logs in Vercel dashboard
+- Ensure all API routes use Next.js App Router conventions
+
+## Next.js App Router
+
+This application uses Next.js 16 App Router:
+- API routes: `src/app/api/**/route.ts`
+- Pages: `src/app/**/page.tsx`
+- Middleware: `src/middleware.ts`
+- No custom server needed - Vercel handles everything

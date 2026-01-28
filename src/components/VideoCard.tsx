@@ -1,7 +1,7 @@
 type VideoCardProps = {
   id: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 export function VideoCard({ id, title, description }: VideoCardProps) {
@@ -40,7 +40,9 @@ export function VideoCard({ id, title, description }: VideoCardProps) {
         <h2 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
           {title}
         </h2>
-        <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+        {description && (
+          <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+        )}
       </div>
     </article>
   );

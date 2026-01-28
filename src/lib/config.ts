@@ -2,15 +2,16 @@
  * Configuration Management
  * 
  * Centralized configuration with environment variable validation
+ * Updated for Next.js/Vercel deployment (no Express server)
  */
 
 const dev = process.env.NODE_ENV !== 'production';
 
 export const config = {
-  // Server
-  server: {
-    port: parseInt(process.env.PORT || '3000', 10),
-    hostname: process.env.HOSTNAME || 'localhost',
+  // Application
+  app: {
+    version: process.env.APP_VERSION || '1.0.0',
+    name: process.env.APP_NAME || 'Topnotch Ecom Store',
     env: process.env.NODE_ENV || 'development',
     isDev: dev,
     isProd: !dev,
@@ -22,12 +23,6 @@ export const config = {
     allowedMethods: process.env.CORS_ALLOWED_METHODS || 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
     allowedHeaders: process.env.CORS_ALLOWED_HEADERS || 'Content-Type, Authorization, X-Requested-With',
     maxAge: parseInt(process.env.CORS_MAX_AGE || '86400', 10),
-  },
-
-  // Rate Limiting
-  rateLimit: {
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10), // 15 minutes
-    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10),
   },
 
   // Logging
@@ -44,29 +39,16 @@ export const config = {
     hstsIncludeSubDomains: process.env.HSTS_INCLUDE_SUBDOMAINS !== 'false',
     hstsPreload: process.env.HSTS_PRELOAD === 'true',
   },
-
-  // Application
-  app: {
-    version: process.env.APP_VERSION || '1.0.0',
-    name: process.env.APP_NAME || 'Topnotch Ecom Store',
-  },
 } as const;
 
 /**
  * Validate required environment variables
+ * Note: In Vercel/serverless, some validations may not be needed
  */
 export function validateConfig(): void {
-  const required = [];
-
-  if (config.server.isProd) {
-    if (config.cors.allowedOrigins.length === 0) {
-      required.push('ALLOWED_ORIGINS');
-    }
-  }
-
-  if (required.length > 0) {
-    throw new Error(
-      `Missing required environment variables: ${required.join(', ')}`
-    );
+  // Only validate in production if needed
+  if (config.app.isProd && config.cors.allowedOrigins.length === 0) {
+    // Warn but don't throw - Vercel handles CORS differently
+    console.warn('ALLOWED_ORIGINS not set - CORS may be restricted in production');
   }
 }

@@ -2,23 +2,41 @@ import type { Metadata } from "next";
 import { VideoCard } from "@/components/VideoCard";
 
 export const metadata: Metadata = {
-  title: "Topnotch Online TV",
+  title: "Videos | Topnotch Books",
   description:
-    "KCSE revision lessons by Thaddeus Mbaluka from the Topnotch Online TV YouTube channel.",
+    "Watch educational videos and tutorials from Topnotch Books to supplement your KCSE revision.",
   openGraph: {
-    title: "Topnotch Online TV",
+    title: "Videos | Topnotch Books",
     description:
-      "Watch KCSE revision lessons by Thaddeus Mbaluka from Topnotch Online TV.",
+      "Educational videos and tutorials to supplement your KCSE revision.",
   },
 };
 
+/**
+ * Fetch videos from YouTube API
+ * Uses Next.js server-side fetching with caching
+ */
 async function getVideos() {
   try {
-    // Use absolute URL for server-side fetching
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 
-                   process.env.NEXT_PUBLIC_SITE_URL ||
-                   'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/v1/youtube`, {
+    // During build time, we need an absolute URL for fetch
+    // In runtime (Vercel), relative URLs work fine
+    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
+    
+    let apiUrl: string;
+    if (isBuildTime) {
+      // During build, use a placeholder or skip API call
+      // The API route will be available at runtime
+      // For now, return empty array - videos will load at runtime
+      return [];
+    } else {
+      // At runtime, use relative path (works in Vercel)
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      apiUrl = baseUrl 
+        ? `${baseUrl}/api/v1/youtube`
+        : '/api/v1/youtube';
+    }
+    
+    const response = await fetch(apiUrl, {
       next: { revalidate: 3600 }, // Revalidate every hour
       headers: {
         'Content-Type': 'application/json',
@@ -29,13 +47,11 @@ async function getVideos() {
       throw new Error('Failed to fetch videos');
     }
 
-    const data = await response.json();
-    return data.success ? data.data : [];
+    const result = await response.json();
+    return result.data || [];
   } catch (error) {
     console.error('Error fetching videos:', error);
-    // Return fallback videos if API fails
-    const { videos } = await import('@/data/videos');
-    return videos;
+    return [];
   }
 }
 
@@ -43,47 +59,44 @@ export default async function VideosPage() {
   const videos = await getVideos();
 
   return (
-    <section className="section-card">
-      <header className="mb-4 space-y-2">
-        <h1 className="section-heading">Topnotch Online TV</h1>
-        <p className="muted">
-          These video lessons are part of Topnotch Online TV, where Thaddeus Mbaluka
-          explains KCSE concepts using the Octopus Revision Method to help students
-          understand faster and remember longer.
+    <>
+      {/* Page Header */}
+      <div className="mb-8">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-muted px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Educational Content
+        </div>
+        <h1 className="section-heading mb-4">
+          Video Resources
+        </h1>
+        <p className="muted max-w-3xl">
+          Watch educational videos and tutorials to supplement your KCSE revision. 
+          These videos complement our revision books and help reinforce key concepts.
         </p>
-        {videos.length === 0 && (
-          <p className="text-xs text-muted-foreground">
-            Videos are loading from the YouTube channel...
-          </p>
-        )}
-      </header>
+      </div>
 
-      {videos.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {videos.map((video: { id: string; title: string; description: string }) => (
-            <VideoCard
-              key={video.id}
-              id={video.id}
-              title={video.title}
-              description={video.description}
-            />
-          ))}
-        </div>
+      {/* Videos Grid */}
+      {videos.length === 0 ? (
+        <section className="section-card">
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">
+              No videos available at this time. Check back soon!
+            </p>
+          </div>
+        </section>
       ) : (
-        <div className="text-center py-8 text-sm text-muted-foreground">
-          <p>No videos available at the moment.</p>
-          <p className="mt-2">
-            <a
-              href="https://www.youtube.com/@TopnotchonlineTV"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground"
-            >
-              Visit Topnotch Online TV on YouTube →
-            </a>
-          </p>
-        </div>
+        <section className="section-card">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {videos.map((video: { id: string; title: string; description?: string }) => (
+              <VideoCard
+                key={video.id}
+                id={video.id}
+                title={video.title}
+                description={video.description}
+              />
+            ))}
+          </div>
+        </section>
       )}
-    </section>
+    </>
   );
 }

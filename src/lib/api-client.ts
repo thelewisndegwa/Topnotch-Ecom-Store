@@ -1,11 +1,13 @@
 /**
  * API Client Utility
  * 
- * Centralized API client for making requests to the backend
+ * Centralized API client for making requests to the Next.js API routes
+ * Works in both development and production (Vercel)
  */
 
-// API runs on port 3000, frontend runs on port 3001
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
+// In production/Vercel, API routes are on the same domain
+// In development, can use relative paths or full URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -15,34 +17,48 @@ export interface ApiResponse<T = any> {
 }
 
 /**
- * Base fetch function with credentials
+ * Base fetch function with error handling
  */
 async function apiFetch<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
+  // Use relative paths for same-origin requests (works in Vercel)
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
-  const response = await fetch(url, {
-    ...options,
-    credentials: 'include', // Important for HttpOnly cookies
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
 
-  const data = await response.json();
+    // Handle non-JSON responses
+    const contentType = response.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      throw new Error(`Unexpected content type: ${contentType}`);
+    }
 
-  if (!response.ok) {
-    throw new Error(data.error || `API request failed: ${response.statusText}`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || `API request failed: ${response.statusText}`);
+    }
+
+    return data;
+  } catch (error) {
+    // Network errors or JSON parsing errors
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Unknown API error occurred');
   }
-
-  return data;
 }
 
 /**
- * API Client with common methods
+ * API Client with common HTTP methods
  */
 export const api = {
   /**

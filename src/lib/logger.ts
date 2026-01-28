@@ -2,6 +2,7 @@
  * Structured Logging System
  * 
  * Production-ready logging with different log levels and structured output
+ * Works in both serverless (Vercel) and traditional Node.js environments
  */
 
 export enum LogLevel {
@@ -39,7 +40,7 @@ class Logger {
       return JSON.stringify(logEntry, null, 2);
     }
 
-    // Compact JSON in production (for log aggregation tools)
+    // Compact JSON in production (for log aggregation tools like Vercel)
     return JSON.stringify(logEntry);
   }
 
@@ -98,7 +99,7 @@ class Logger {
 export const logger = new Logger();
 
 /**
- * Request logging middleware
+ * Request logging helper for Next.js API routes
  */
 export interface RequestLogMeta {
   method: string;
