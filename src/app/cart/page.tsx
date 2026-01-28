@@ -1,14 +1,31 @@
 'use client';
 
-import type { Metadata } from "next";
 import { useCart } from "@/contexts/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by waiting for client-side mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show loading state during hydration
+  if (!mounted) {
+    return (
+      <section className="section-card">
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Loading cart...</p>
+        </div>
+      </section>
+    );
+  }
 
   if (items.length === 0) {
     return (

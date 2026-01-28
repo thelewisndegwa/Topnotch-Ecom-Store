@@ -2,7 +2,7 @@
 
 import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
 
 export default function CheckoutPage() {
@@ -19,8 +19,15 @@ export default function CheckoutPage() {
     paymentMethod: 'mpesa' as 'mpesa' | 'card' | 'bank',
   });
 
+  // Redirect to cart if empty - must be in useEffect to avoid render-time navigation
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push('/cart');
+    }
+  }, [items.length, router]);
+
+  // Show nothing while redirecting
   if (items.length === 0) {
-    router.push('/cart');
     return null;
   }
 

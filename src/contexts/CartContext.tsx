@@ -36,10 +36,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes (but only after mount)
   useEffect(() => {
-    if (mounted) {
+    if (!mounted) return;
+    
+    try {
       localStorage.setItem('topnotch-cart', JSON.stringify(items));
+    } catch (error) {
+      console.error('Error saving cart to localStorage:', error);
     }
   }, [items, mounted]);
 
