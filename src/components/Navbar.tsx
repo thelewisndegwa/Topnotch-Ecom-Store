@@ -15,11 +15,15 @@ const navLinks = [
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleMobileMenu = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const closeMobileMenu = () => {
+  const closeMobileMenu = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setIsMobileMenuOpen(false);
   };
 
@@ -63,7 +67,12 @@ export function Navbar() {
         <div className="flex sm:hidden items-center gap-3">
           <CartIcon />
           <button
+            type="button"
             onClick={toggleMobileMenu}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              toggleMobileMenu(e);
+            }}
             className="inline-flex items-center justify-center rounded-full border border-border-subtle bg-background p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
@@ -110,6 +119,7 @@ export function Navbar() {
           <div
             className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 sm:hidden"
             onClick={closeMobileMenu}
+            onTouchStart={closeMobileMenu}
           />
           
           {/* Menu Drawer */}
