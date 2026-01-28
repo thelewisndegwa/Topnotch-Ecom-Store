@@ -1,5 +1,5 @@
 /**
- * Next.js Middleware
+ * Next.js Proxy
  * 
  * Handles security headers, CORS, and request processing
  * Runs on the Edge Runtime for optimal performance
@@ -51,7 +51,7 @@ function getContentSecurityPolicy(): string {
     "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self';";
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const response = NextResponse.next();
   const origin = request.headers.get('origin');
 
@@ -118,7 +118,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Configure which routes the middleware runs on
+// Configure which routes the proxy runs on
 export const config = {
   matcher: [
     /*
