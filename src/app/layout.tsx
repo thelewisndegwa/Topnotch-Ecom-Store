@@ -17,13 +17,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Topnotch Books – KCSE Revision",
+    default: "Topnotch Books",
     template: "%s | Topnotch Books",
   },
   description:
     "KCSE revision books and calm study resources by educator Thaddeus Mbaluka, built around the Octopus Revision Method.",
   openGraph: {
-    title: "Topnotch Books – KCSE Revision",
+    title: "Topnotch Books",
     description:
       "KCSE revision books and calm study resources by educator Thaddeus Mbaluka, built around the Octopus Revision Method.",
     siteName: "Topnotch Books",

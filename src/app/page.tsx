@@ -3,11 +3,11 @@ import Image from "next/image";
 import { FeaturedBooks } from "@/components/FeaturedBooks";
 
 export const metadata: Metadata = {
-  title: "KCSE Revision Books",
+  title: "Topnotch Books",
   description:
     "KCSE revision made simple and visual with the Octopus Revision Method and Topnotch Books by Thaddeus Mbaluka.",
   openGraph: {
-    title: "KCSE Revision Books",
+    title: "Topnotch Books",
     description:
       "Discover KCSE revision books and resources built around the Octopus Revision Method for calm, structured study.",
   },
