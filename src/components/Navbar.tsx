@@ -15,13 +15,13 @@ const navLinks = [
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = (e?: React.MouseEvent) => {
+  const toggleMobileMenu = (e?: React.MouseEvent | React.TouchEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const closeMobileMenu = (e?: React.MouseEvent) => {
+  const closeMobileMenu = (e?: React.MouseEvent | React.TouchEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     setIsMobileMenuOpen(false);
@@ -69,10 +69,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleMobileMenu}
-            onTouchStart={(e) => {
-              e.preventDefault();
-              toggleMobileMenu(e);
-            }}
+            onTouchStart={toggleMobileMenu}
             className="inline-flex items-center justify-center rounded-full border border-border-subtle bg-background p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
