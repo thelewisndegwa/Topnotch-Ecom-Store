@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { FeaturedBooks } from "@/components/FeaturedBooks";
+import { VideoCard } from "@/components/VideoCard";
+import { blogPosts } from "@/data/blog";
 
 export const metadata: Metadata = {
   title: "Topnotch Books",
@@ -13,7 +16,91 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+/**
+ * Fetch videos from YouTube API
+ * Uses Next.js server-side fetching with caching
+ */
+async function getVideos() {
+  try {
+    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
+    
+    if (isBuildTime) {
+      return [];
+    }
+    
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const apiUrl = baseUrl 
+      ? `${baseUrl}/api/v1/youtube`
+      : '/api/v1/youtube';
+    
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 3600 }, // Revalidate every hour
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch videos');
+    }
+
+    const result = await response.json();
+    return result.data || [];
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const videos = await getVideos();
+  const recentVideos = videos.slice(0, 3); // Show 3 most recent videos
+  const recentPosts = blogPosts.slice(0, 3); // Show 3 most recent blog posts
+
+  // Placeholder blog posts if no real posts available
+  const placeholderPosts = [
+    {
+      slug: "placeholder-1",
+      title: "KCSE Revision Strategies",
+      excerpt: "Discover effective strategies for structuring your KCSE revision and maximizing your study time.",
+      publishedAt: new Date().toISOString().split('T')[0],
+    },
+    {
+      slug: "placeholder-2",
+      title: "The Octopus Method Explained",
+      excerpt: "Learn how the Octopus Revision Method helps students organize past papers and identify patterns.",
+      publishedAt: new Date().toISOString().split('T')[0],
+    },
+    {
+      slug: "placeholder-3",
+      title: "Study Tips for Success",
+      excerpt: "Practical tips and techniques to help you stay focused and make the most of your revision sessions.",
+      publishedAt: new Date().toISOString().split('T')[0],
+    },
+  ];
+
+  // Placeholder videos if no real videos available
+  const placeholderVideos = [
+    {
+      id: "VIDEO_PLACEHOLDER_1",
+      title: "KCSE Mathematics Tutorial",
+      description: "Comprehensive mathematics revision tutorials covering key KCSE topics.",
+    },
+    {
+      id: "VIDEO_PLACEHOLDER_2",
+      title: "Chemistry Revision Guide",
+      description: "Step-by-step chemistry revision videos to help you master KCSE chemistry.",
+    },
+    {
+      id: "VIDEO_PLACEHOLDER_3",
+      title: "English Comprehension Tips",
+      description: "Learn effective strategies for tackling English comprehension questions in KCSE.",
+    },
+  ];
+
+  const displayPosts = recentPosts.length > 0 ? recentPosts : placeholderPosts;
+  const displayVideos = recentVideos.length > 0 ? recentVideos : placeholderVideos;
+
   return (
     <>
       <section className="section-card">
@@ -50,6 +137,91 @@ export default function Home() {
       </section>
 
       <FeaturedBooks />
+
+      {/* Blog Posts Preview */}
+      <section className="section-card">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h2 className="section-heading">Latest from the Blog</h2>
+            <p className="muted">
+              KCSE revision tips, study strategies, and insights from the Octopus Method.
+            </p>
+          </div>
+          <Link
+            href="/blog"
+            className="text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            View All →
+          </Link>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {displayPosts.map((post) => {
+            const isPlaceholder = post.slug.startsWith('placeholder-');
+            return (
+              <article
+                key={post.slug}
+                className="rounded-lg border border-border-subtle bg-background/60 p-4 transition hover:bg-background"
+              >
+                <h3 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-base">
+                  {post.title}
+                </h3>
+                <p className="mt-1 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  {new Date(post.publishedAt).toLocaleDateString("en-KE", {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                  })}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {post.excerpt.length > 120 ? `${post.excerpt.substring(0, 120)}...` : post.excerpt}
+                </p>
+                {isPlaceholder ? (
+                  <span className="mt-3 inline-flex text-xs font-medium text-muted-foreground">
+                    Coming Soon
+                  </span>
+                ) : (
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="mt-3 inline-flex text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                  >
+                    Read More →
+                  </Link>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Videos Preview */}
+      <section className="section-card">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h2 className="section-heading">Educational Videos</h2>
+            <p className="muted">
+              Watch tutorials and educational content to supplement your KCSE revision.
+            </p>
+          </div>
+          <Link
+            href="/videos"
+            className="text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            View All →
+          </Link>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {displayVideos.map((video: { id: string; title: string; description?: string }) => (
+            <VideoCard
+              key={video.id}
+              id={video.id}
+              title={video.title}
+              description={video.description}
+            />
+          ))}
+        </div>
+      </section>
 
       <section className="section-card">
         <div className="grid gap-5 sm:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] sm:items-start">

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CartIcon } from "@/components/CartIcon";
 
 const navLinks = [
@@ -14,16 +14,49 @@ const navLinks = [
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const toggleMobileMenu = (e?: React.MouseEvent | React.TouchEvent) => {
-    e?.preventDefault();
+  // Ensure component is mounted before showing menu (prevents hydration issues)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      if (isMobileMenuOpen && mounted) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    } catch (error) {
+      // Silently handle any errors with body style manipulation
+      console.error('Error managing body scroll:', error);
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      try {
+        if (typeof window !== 'undefined') {
+          document.body.style.overflow = '';
+        }
+      } catch (error) {
+        // Silently handle cleanup errors
+      }
+    };
+  }, [isMobileMenuOpen, mounted]);
+
+  const toggleMobileMenu = (e?: React.MouseEvent) => {
     e?.stopPropagation();
+    e?.preventDefault();
     setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const closeMobileMenu = (e?: React.MouseEvent | React.TouchEvent) => {
-    e?.preventDefault();
+  const closeMobileMenu = (e?: React.MouseEvent) => {
     e?.stopPropagation();
+    e?.preventDefault();
     setIsMobileMenuOpen(false);
   };
 
@@ -31,7 +64,16 @@ export function Navbar() {
     <header className="sticky top-0 z-40 border-b border-border-subtle bg-background">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-baseline gap-1" onClick={closeMobileMenu}>
+        <Link 
+          href="/" 
+          className="flex items-baseline gap-1" 
+          onClick={(e) => {
+            // Close mobile menu if open, but don't prevent navigation
+            if (isMobileMenuOpen) {
+              setIsMobileMenuOpen(false);
+            }
+          }}
+        >
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-900 dark:text-slate-50">
             Topnotch
           </span>
@@ -69,8 +111,8 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleMobileMenu}
-            onTouchStart={toggleMobileMenu}
-            className="inline-flex items-center justify-center rounded-full border border-border-subtle bg-background p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="inline-flex items-center justify-center rounded-full border border-border-subtle bg-background p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted"
+            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
           >
@@ -110,17 +152,27 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {mounted && isMobileMenuOpen && (
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 sm:hidden"
-            onClick={closeMobileMenu}
-            onTouchStart={closeMobileMenu}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[35] sm:hidden"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeMobileMenu(e);
+            }}
+            onMouseDown={(e) => {
+              // Prevent text selection when clicking backdrop
+              e.preventDefault();
+            }}
+            role="button"
+            tabIndex={-1}
+            aria-label="Close menu"
+            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', cursor: 'pointer' }}
           />
           
           {/* Menu Drawer */}
-          <div className="fixed inset-y-0 right-0 z-40 w-full max-w-xs bg-background border-l border-border-subtle shadow-lg sm:hidden">
+          <div className="fixed inset-y-0 right-0 z-[45] w-full max-w-xs bg-background border-l border-border-subtle shadow-lg sm:hidden transform transition-transform duration-200 ease-in-out">
             <div className="flex flex-col h-full">
               {/* Menu Header */}
               <div className="flex items-center justify-between p-4 border-b border-border-subtle">
@@ -128,8 +180,10 @@ export function Navbar() {
                   Menu
                 </span>
                 <button
+                  type="button"
                   onClick={closeMobileMenu}
-                  className="inline-flex items-center justify-center rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="inline-flex items-center justify-center rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted"
+                  style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
                   aria-label="Close menu"
                 >
                   <svg
@@ -156,7 +210,8 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={closeMobileMenu}
-                      className="block rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      className="block rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted"
+                      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
                     >
                       {link.label}
                     </Link>
@@ -169,7 +224,8 @@ export function Navbar() {
                 <Link
                   href="/shop"
                   onClick={closeMobileMenu}
-                  className="block w-full text-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2.5 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                  className="block w-full text-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2.5 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 active:bg-slate-700 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:active:bg-slate-300"
+                  style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
                 >
                   Shop Books
                 </Link>
