@@ -1,10 +1,11 @@
 'use client';
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { CartIcon } from "@/components/CartIcon";
 
-const navLinks = [
+const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
   { href: "/videos", label: "Videos" },
@@ -12,45 +13,33 @@ const navLinks = [
   { href: "/about", label: "About" },
 ];
 
+const MENU_ID = "nav-menu-toggle";
+
 export function Navbar() {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
-
-  const close = () => setOpen(false);
+    if (inputRef.current) inputRef.current.checked = false;
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-subtle bg-background">
+      {/* Top bar */}
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo */}
         <Link
           href="/"
-          className="flex items-baseline gap-1 shrink-0"
-          onClick={close}
+          className="flex shrink-0 items-baseline gap-1 text-sm font-semibold uppercase tracking-[0.22em] text-slate-900"
         >
-          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-900">
-            Topnotch
-          </span>
-          <span className="text-sm font-light uppercase tracking-[0.22em] text-muted-foreground">
-            Books
-          </span>
+          Topnotch
+          <span className="font-light text-muted-foreground"> Books</span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden sm:flex flex-1 items-center justify-end gap-4">
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-end sm:gap-4">
           <nav className="flex items-center gap-5 text-xs font-medium text-muted-foreground">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition-colors hover:text-foreground"
-              >
-                {link.label}
+            {NAV_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="transition-colors hover:text-foreground">
+                {l.label}
               </Link>
             ))}
           </nav>
@@ -63,86 +52,74 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile: cart + hamburger */}
-        <div className="flex sm:hidden items-center gap-2">
+        <div className="flex items-center gap-2 sm:hidden">
           <CartIcon />
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center -m-2 text-muted-foreground hover:text-foreground"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
+          <label
+            htmlFor={MENU_ID}
+            className="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label="Open menu"
           >
-            {open ? (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
-          </button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </label>
         </div>
       </div>
 
-      {/* Mobile overlay + menu */}
-      {open && (
-        <div className="fixed inset-0 z-[100] sm:hidden" aria-hidden="false">
-          {/* Backdrop: tap to close */}
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/50 w-full h-full cursor-default"
-            onClick={close}
-            aria-label="Close menu"
-          />
-          {/* Panel */}
-          <div
-            className="absolute top-0 right-0 bottom-0 w-[min(100vw,280px)] bg-background border-l border-border-subtle shadow-xl flex flex-col"
-            role="dialog"
-            aria-label="Main menu"
-          >
-            <div className="flex justify-end p-3">
-              <button
-                type="button"
-                onClick={close}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted"
-                aria-label="Close menu"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <nav className="flex-1 px-4 pb-4 overflow-y-auto">
-              <ul className="space-y-1">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={close}
-                      className="flex items-center min-h-[48px] px-4 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div className="p-4 border-t border-border-subtle">
-              <Link
-                href="/shop"
-                onClick={close}
-                className="flex items-center justify-center min-h-[48px] w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-slate-50 hover:bg-slate-800"
-              >
-                Shop Books
-              </Link>
-            </div>
+      {/* Mobile menu layer: fixed box so overlay/drawer are siblings of checkbox for peer-checked */}
+      <div className="fixed inset-0 z-[100] pointer-events-none sm:pointer-events-none sm:hidden" aria-hidden>
+        <input
+          ref={inputRef}
+          type="checkbox"
+          id={MENU_ID}
+          className="peer sr-only"
+        />
+        <label
+          htmlFor={MENU_ID}
+          className="fixed inset-0 bg-black/50 opacity-0 transition-opacity duration-200 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto sm:hidden"
+          aria-label="Close menu"
+        />
+        <aside
+          className="fixed inset-y-0 right-0 z-[101] flex w-[min(100vw,280px)] flex-col border-l border-border-subtle bg-background shadow-xl transition-transform duration-200 translate-x-full peer-checked:translate-x-0 sm:hidden"
+          aria-label="Menu"
+        >
+          <div className="flex justify-end p-3">
+            <label
+              htmlFor={MENU_ID}
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+              aria-label="Close menu"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </label>
           </div>
-        </div>
-      )}
+          <nav className="flex-1 overflow-y-auto px-4 pb-4">
+            <ul className="space-y-1">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="flex min-h-[48px] items-center rounded-lg px-4 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="border-t border-border-subtle p-4">
+            <Link
+              href="/shop"
+              className="flex min-h-[48px] w-full items-center justify-center rounded-lg bg-slate-900 px-4 text-sm font-semibold text-slate-50 hover:bg-slate-800"
+            >
+              Shop Books
+            </Link>
+          </div>
+        </aside>
+      </div>
     </header>
   );
 }

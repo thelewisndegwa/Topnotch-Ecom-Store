@@ -29,6 +29,11 @@ body {
   color: var(--foreground);
 }
 
+/* Lock scroll when mobile nav menu is open (checkbox-driven) */
+body:has(#nav-menu-toggle:checked) {
+  overflow: hidden;
+}
+
 /**
  * Layout helpers
  */
