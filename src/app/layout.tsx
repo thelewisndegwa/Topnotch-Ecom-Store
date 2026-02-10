@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     default: "Topnotch Books",
     template: "%s | Topnotch Books",
   },
+  icons: {
+    icon: "/icon.svg",
+  },
   description:
     "KCSE revision books and calm study resources by educator Thaddeus Mbaluka, built around the Octopus Revision Method.",
   openGraph: {
