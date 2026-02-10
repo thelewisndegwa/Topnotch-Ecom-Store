@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="mt-8 border-t border-border-subtle pt-4 text-xs text-muted-foreground">
       <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-[0.75rem] font-semibold tracking-wide text-slate-900 dark:text-slate-50">
+          <p className="text-[0.75rem] font-semibold tracking-wide text-slate-900">
             Topnotch Books
           </p>
           <p className="mt-1 text-[0.72rem] leading-relaxed">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { VideoCard } from "@/components/VideoCard";
+import { videos } from "@/data/videos";
 
 export const metadata: Metadata = {
   title: "Videos | Topnotch Books",
@@ -12,51 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * Fetch videos from YouTube API
- * Uses Next.js server-side fetching with caching
- */
-async function getVideos() {
-  try {
-    // During build time, we need an absolute URL for fetch
-    // In runtime (Vercel), relative URLs work fine
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
-    
-    let apiUrl: string;
-    if (isBuildTime) {
-      // During build, use a placeholder or skip API call
-      // The API route will be available at runtime
-      // For now, return empty array - videos will load at runtime
-      return [];
-    } else {
-      // At runtime, use relative path (works in Vercel)
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      apiUrl = baseUrl 
-        ? `${baseUrl}/api/v1/youtube`
-        : '/api/v1/youtube';
-    }
-    
-    const response = await fetch(apiUrl, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch videos');
-    }
-
-    const result = await response.json();
-    return result.data || [];
-  } catch (error) {
-    console.error('Error fetching videos:', error);
-    return [];
-  }
-}
-
-export default async function VideosPage() {
-  const videos = await getVideos();
+export default function VideosPage() {
 
   return (
     <>

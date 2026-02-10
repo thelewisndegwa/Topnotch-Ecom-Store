@@ -52,7 +52,7 @@ export default function AboutPage() {
             <div className="mx-auto hidden w-40 sm:block md:w-48">
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-border-subtle bg-muted">
                 <Image
-                  src="https://images.pexels.com/photos/6326064/pexels-photo-6326064.jpeg?auto=compress&cs=tinysrgb&w=400"
+                  src="/placeholder-author.svg"
                   alt="Portrait of Thaddeus Mbaluka"
                   fill
                   className="object-cover"

@@ -41,7 +41,7 @@ export function CartIcon() {
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
       </svg>
       {mounted && itemCount > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-[0.65rem] font-semibold text-slate-50 dark:bg-slate-100 dark:text-slate-900">
+        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-[0.65rem] font-semibold text-slate-50">
           {itemCount > 9 ? '9+' : itemCount}
         </span>
       )}

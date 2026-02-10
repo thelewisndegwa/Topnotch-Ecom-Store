@@ -37,7 +37,7 @@ export default function CartPage() {
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800"
           >
             Browse Books
           </Link>
@@ -61,7 +61,7 @@ export default function CartPage() {
         {items.map((item) => (
           <div
             key={item.slug}
-            className="flex gap-4 rounded-lg border border-border-subtle bg-white/80 p-4 dark:bg-slate-900/70"
+            className="flex gap-4 rounded-lg border border-border-subtle bg-white/80 p-4"
           >
             <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded border border-border-subtle bg-muted">
               <Image
@@ -78,7 +78,7 @@ export default function CartPage() {
                 <div className="flex-1">
                   <Link
                     href={`/shop/${item.slug}`}
-                    className="text-sm font-semibold text-slate-900 hover:underline dark:text-slate-50"
+                    className="text-sm font-semibold text-slate-900 hover:underline "
                   >
                     {item.title}
                   </Link>
@@ -125,7 +125,7 @@ export default function CartPage() {
                     ))}
                   </select>
                 </div>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <p className="text-sm font-semibold text-slate-900">
                   KES{" "}
                   <span className="tabular-nums">
                     {(item.price * item.quantity).toLocaleString("en-KE", {
@@ -141,8 +141,8 @@ export default function CartPage() {
 
       <div className="mt-6 space-y-4 border-t border-border-subtle pt-6">
         <div className="flex items-center justify-between text-sm">
-          <span className="font-semibold text-slate-900 dark:text-slate-50">Total</span>
-          <span className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+          <span className="font-semibold text-slate-900">Total</span>
+          <span className="text-lg font-semibold text-slate-900">
             KES{" "}
             <span className="tabular-nums">
               {total.toLocaleString("en-KE", {
@@ -155,13 +155,13 @@ export default function CartPage() {
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link
             href="/shop"
-            className="flex-1 inline-flex items-center justify-center rounded-full border border-border-subtle px-4 py-2 text-xs font-medium tracking-wide text-muted-foreground transition-colors hover:border-slate-900/40 hover:text-foreground dark:hover:border-slate-100/60"
+            className="flex-1 inline-flex items-center justify-center rounded-full border border-border-subtle px-4 py-2 text-xs font-medium tracking-wide text-muted-foreground transition-colors hover:border-slate-900/40 hover:text-foreground"
           >
             Continue Shopping
           </Link>
           <button
             onClick={() => router.push('/checkout')}
-            className="flex-1 inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="flex-1 inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800"
           >
             Proceed to Checkout
           </button>

@@ -38,34 +38,12 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
-      // Create order
-      const response = await fetch('/api/v1/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            slug: item.slug,
-            title: item.title,
-            price: item.price,
-            quantity: item.quantity,
-          })),
-          customer: formData,
-          total,
-          paymentMethod: formData.paymentMethod,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create order');
-      }
-
-      const order = await response.json();
+      // Create order locally (no backend) - generate a simple order ID
+      const orderId = `ORD-${Date.now()}`;
 
       // Clear cart and redirect to confirmation
       clearCart();
-      router.push(`/checkout/confirmation?orderId=${order.data.id}`);
+      router.push(`/checkout/confirmation?orderId=${orderId}`);
     } catch (error) {
       console.error('Checkout error:', error);
       alert('There was an error processing your order. Please try again.');
@@ -86,7 +64,7 @@ export default function CheckoutPage() {
         {/* Customer Information */}
         <div className="space-y-6">
           <section>
-            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900">
               Contact Information
             </h2>
             <div className="space-y-4">
@@ -134,7 +112,7 @@ export default function CheckoutPage() {
           </section>
 
           <section>
-            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900">
               Delivery Address
             </h2>
             <div className="space-y-4">
@@ -182,7 +160,7 @@ export default function CheckoutPage() {
           </section>
 
           <section>
-            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900">
               Payment Method
             </h2>
             <div className="space-y-3">
@@ -196,7 +174,7 @@ export default function CheckoutPage() {
                   className="h-4 w-4"
                 />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">M-Pesa</p>
+                  <p className="text-sm font-medium text-slate-900">M-Pesa</p>
                   <p className="text-xs text-muted-foreground">Pay via M-Pesa mobile money</p>
                 </div>
               </label>
@@ -210,7 +188,7 @@ export default function CheckoutPage() {
                   className="h-4 w-4"
                 />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">Credit/Debit Card</p>
+                  <p className="text-sm font-medium text-slate-900">Credit/Debit Card</p>
                   <p className="text-xs text-muted-foreground">Pay with Visa or Mastercard</p>
                 </div>
               </label>
@@ -224,7 +202,7 @@ export default function CheckoutPage() {
                   className="h-4 w-4"
                 />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">Bank Transfer</p>
+                  <p className="text-sm font-medium text-slate-900">Bank Transfer</p>
                   <p className="text-xs text-muted-foreground">Direct bank transfer</p>
                 </div>
               </label>
@@ -234,8 +212,8 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="space-y-6">
-          <div className="rounded-lg border border-border-subtle bg-white/80 p-4 dark:bg-slate-900/70">
-            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <div className="rounded-lg border border-border-subtle bg-white/80 p-4">
+            <h2 className="mb-4 text-sm font-semibold tracking-tight text-slate-900">
               Order Summary
             </h2>
             <div className="space-y-3">
@@ -251,7 +229,7 @@ export default function CheckoutPage() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-slate-900 dark:text-slate-50 line-clamp-2">
+                    <p className="text-xs font-medium text-slate-900 line-clamp-2">
                       {item.title}
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -263,8 +241,8 @@ export default function CheckoutPage() {
             </div>
             <div className="mt-4 border-t border-border-subtle pt-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-semibold text-slate-900 dark:text-slate-50">Total</span>
-                <span className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                <span className="font-semibold text-slate-900">Total</span>
+                <span className="text-lg font-semibold text-slate-900">
                   KES{" "}
                   <span className="tabular-nums">
                     {total.toLocaleString("en-KE", {
@@ -279,7 +257,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-3 text-sm font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-3 text-sm font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Processing...' : 'Place Order'}
           </button>

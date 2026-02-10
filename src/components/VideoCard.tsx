@@ -37,7 +37,7 @@ export function VideoCard({ id, title, description }: VideoCardProps) {
         )}
       </div>
       <div className="space-y-1">
-        <h2 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+        <h2 className="text-sm font-semibold tracking-tight text-slate-900">
           {title}
         </h2>
         {description && (

@@ -19,7 +19,7 @@ export function BookCard({
   href = "#",
 }: BookCardProps) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-border-subtle bg-white/80 transition-colors dark:bg-slate-900/70 hover:border-slate-300 dark:hover:border-slate-600">
+    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-border-subtle bg-white/80 transition-colors hover:border-slate-300">
       <div className="relative h-40 w-full overflow-hidden bg-muted sm:h-48">
         <Image
           src={coverSrc}
@@ -32,7 +32,7 @@ export function BookCard({
 
       <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
         <header className="space-y-1">
-          <h3 className="line-clamp-2 text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <h3 className="line-clamp-2 text-sm font-semibold tracking-tight text-slate-900">
             {title}
           </h3>
           <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
@@ -41,7 +41,7 @@ export function BookCard({
         </header>
 
         <div className="mt-auto flex items-end justify-between gap-3 text-sm">
-          <p className="font-semibold text-slate-900 dark:text-slate-50">
+          <p className="font-semibold text-slate-900">
             KES{" "}
             <span className="tabular-nums">
               {priceKes.toLocaleString("en-KE", {
@@ -52,7 +52,7 @@ export function BookCard({
 
           <Link
             href={href}
-            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-3 py-1.5 text-[0.7rem] font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-3 py-1.5 text-[0.7rem] font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800"
           >
             View Book
           </Link>

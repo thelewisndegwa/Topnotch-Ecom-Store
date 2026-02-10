@@ -50,7 +50,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           KCSE REVISION · STUDY TIPS
         </p>
-        <h1 className="text-balance text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-2xl">
+        <h1 className="text-balance text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
           {post.title}
         </h1>
         <p className="text-[0.75rem] text-muted-foreground">

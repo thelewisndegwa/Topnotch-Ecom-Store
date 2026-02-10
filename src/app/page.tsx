@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FeaturedBooks } from "@/components/FeaturedBooks";
 import { VideoCard } from "@/components/VideoCard";
 import { blogPosts } from "@/data/blog";
+import { videos as allVideos } from "@/data/videos";
 
 export const metadata: Metadata = {
   title: "Topnotch Books",
@@ -16,46 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * Fetch videos from YouTube API
- * Uses Next.js server-side fetching with caching
- */
-async function getVideos() {
-  try {
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
-    
-    if (isBuildTime) {
-      return [];
-    }
-    
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const apiUrl = baseUrl 
-      ? `${baseUrl}/api/v1/youtube`
-      : '/api/v1/youtube';
-    
-    const response = await fetch(apiUrl, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch videos');
-    }
-
-    const result = await response.json();
-    return result.data || [];
-  } catch (error) {
-    console.error('Error fetching videos:', error);
-    return [];
-  }
-}
-
-export default async function Home() {
-  const videos = await getVideos();
-  const recentVideos = videos.slice(0, 3); // Show 3 most recent videos
-  const recentPosts = blogPosts.slice(0, 3); // Show 3 most recent blog posts
+export default function Home() {
+  const recentVideos = allVideos.slice(0, 3);
+  const recentPosts = blogPosts.slice(0, 3);
 
   // Placeholder blog posts if no real posts available
   const placeholderPosts = [
@@ -99,7 +63,7 @@ export default async function Home() {
   ];
 
   const displayPosts = recentPosts.length > 0 ? recentPosts : placeholderPosts;
-  const displayVideos = recentVideos.length > 0 ? recentVideos : placeholderVideos;
+  const displayVideos = recentVideos.length > 0 ? recentVideos : placeholderVideos as { id: string; title: string; description?: string }[];
 
   return (
     <>
@@ -107,7 +71,7 @@ export default async function Home() {
         <p className="text-[0.75rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           KCSE REVISION · OCTOPUS METHOD
         </p>
-        <h2 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+        <h2 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           KCSE revision made simple, visual, and deeply memorable.
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -123,13 +87,13 @@ export default async function Home() {
         <div className="mt-6 flex flex-wrap gap-3">
           <a
             href="/shop"
-            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100/10 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-4 py-2 text-xs font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800"
           >
             Shop Books
           </a>
           <a
             href="/method"
-            className="inline-flex items-center justify-center rounded-full border border-border-subtle px-4 py-2 text-xs font-medium tracking-wide text-muted-foreground transition-colors hover:border-slate-900/40 hover:text-foreground dark:hover:border-slate-100/60"
+            className="inline-flex items-center justify-center rounded-full border border-border-subtle px-4 py-2 text-xs font-medium tracking-wide text-muted-foreground transition-colors hover:border-slate-900/40 hover:text-foreground"
           >
             Learn the Method
           </a>
@@ -163,7 +127,7 @@ export default async function Home() {
                 key={post.slug}
                 className="rounded-lg border border-border-subtle bg-background/60 p-4 transition hover:bg-background"
               >
-                <h3 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-base">
+                <h3 className="text-sm font-semibold tracking-tight text-slate-900 sm:text-base">
                   {post.title}
                 </h3>
                 <p className="mt-1 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
@@ -256,7 +220,7 @@ export default async function Home() {
           <div className="mx-auto hidden w-32 sm:block md:w-40">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-border-subtle bg-muted">
               <Image
-                src="https://images.pexels.com/photos/6326064/pexels-photo-6326064.jpeg?auto=compress&cs=tinysrgb&w=400"
+                src="/placeholder-author.svg"
                 alt="Portrait of Thaddeus Mbaluka"
                 fill
                 className="object-cover"

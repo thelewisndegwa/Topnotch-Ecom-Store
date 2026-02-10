@@ -29,7 +29,7 @@ export const adminBooks: AdminBook[] = [
     price: 850,
     description:
       "Topic–by–topic Form 4 maths revision with worked KCSE-style questions, model answers, and visual summaries for each subtopic.",
-    coverImagePath: "https://images.pexels.com/photos/3768126/pexels-photo-3768126.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-10T08:00:00",
     updatedAt: "2024-01-10T08:00:00",
     stock: 150,
@@ -43,7 +43,7 @@ export const adminBooks: AdminBook[] = [
     price: 920,
     description:
       "Structured Form 3 chemistry notes built from real KCSE past papers, focusing on experiments, equations, and common traps.",
-    coverImagePath: "https://images.pexels.com/photos/8533140/pexels-photo-8533140.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-11T09:15:00",
     updatedAt: "2024-01-11T09:15:00",
     stock: 120,
@@ -57,7 +57,7 @@ export const adminBooks: AdminBook[] = [
     price: 780,
     description:
       "Reading passages, guided questions, and marking-scheme style notes to build Form 2 comprehension confidence.",
-    coverImagePath: "https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-12T10:30:00",
     updatedAt: "2024-01-12T10:30:00",
     stock: 200,
@@ -71,7 +71,7 @@ export const adminBooks: AdminBook[] = [
     price: 990,
     description:
       "An annotated atlas of must-know Form 4 biology diagrams, processes, and labelled illustrations for last-minute revision.",
-    coverImagePath: "https://images.pexels.com/photos/3760323/pexels-photo-3760323.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-13T11:00:00",
     updatedAt: "2024-01-13T11:00:00",
     stock: 180,
@@ -85,7 +85,7 @@ export const adminBooks: AdminBook[] = [
     price: 930,
     description:
       "Form 3 physics exam-style questions grouped by topic, with step-by-step solutions and examiner-style marking notes.",
-    coverImagePath: "https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-14T14:20:00",
     updatedAt: "2024-01-14T14:20:00",
     stock: 95,
@@ -99,7 +99,7 @@ export const adminBooks: AdminBook[] = [
     price: 800,
     description:
       "Concise notes and KCSE-style questions covering key Form 4 business concepts, case studies, and structured essay practice.",
-    coverImagePath: "https://images.pexels.com/photos/590570/pexels-photo-590570.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-15T08:45:00",
     updatedAt: "2024-01-15T08:45:00",
     stock: 110,
@@ -113,7 +113,7 @@ export const adminBooks: AdminBook[] = [
     price: 760,
     description:
       "Organised topic notes and short-answer questions for Form 2 History & Government, aligned with KCSE trends and verbs.",
-    coverImagePath: "https://images.pexels.com/photos/3494806/pexels-photo-3494806.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-16T10:00:00",
     updatedAt: "2024-01-16T10:00:00",
     stock: 140,
@@ -127,7 +127,7 @@ export const adminBooks: AdminBook[] = [
     price: 720,
     description:
       "Chapter-by-chapter review questions and essay prompts for Form 4 C.R.E., with guidance on structuring KCSE-style answers.",
-    coverImagePath: "https://images.pexels.com/photos/3772620/pexels-photo-3772620.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
     createdAt: "2024-01-17T09:30:00",
     updatedAt: "2024-01-17T09:30:00",
     stock: 160,

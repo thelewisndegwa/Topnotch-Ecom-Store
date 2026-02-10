@@ -24,7 +24,7 @@ export default function MethodPage() {
 
       <div className="space-y-6 text-sm leading-relaxed text-muted-foreground">
         <section>
-          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900">
             How It Works
           </h2>
           <div className="space-y-3">
@@ -48,12 +48,12 @@ export default function MethodPage() {
         </section>
 
         <section>
-          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900">
             Key Principles
           </h2>
           <div className="space-y-3">
             <div>
-              <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="mb-1 font-semibold text-slate-900">
                 Topic-Centered Learning
               </h3>
               <p>
@@ -63,7 +63,7 @@ export default function MethodPage() {
               </p>
             </div>
             <div>
-              <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="mb-1 font-semibold text-slate-900">
                 Visual Organization
               </h3>
               <p>
@@ -72,7 +72,7 @@ export default function MethodPage() {
               </p>
             </div>
             <div>
-              <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="mb-1 font-semibold text-slate-900">
                 Pattern Recognition
               </h3>
               <p>
@@ -82,7 +82,7 @@ export default function MethodPage() {
               </p>
             </div>
             <div>
-              <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="mb-1 font-semibold text-slate-900">
                 Calm, Structured Practice
               </h3>
               <p>
@@ -94,7 +94,7 @@ export default function MethodPage() {
         </section>
 
         <section>
-          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+          <h2 className="mb-3 text-base font-semibold tracking-tight text-slate-900">
             Using the Method with Topnotch Books
           </h2>
           <div className="space-y-3">
@@ -111,7 +111,7 @@ export default function MethodPage() {
             <p>
               <a
                 href="/shop"
-                className="font-medium text-slate-900 underline-offset-4 hover:underline dark:text-slate-50"
+                className="font-medium text-slate-900 underline-offset-4 hover:underline "
               >
                 Browse our books →
               </a>

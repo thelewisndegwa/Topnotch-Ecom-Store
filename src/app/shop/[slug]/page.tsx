@@ -71,13 +71,13 @@ export default async function BookDetailPage({ params }: PageProps) {
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {book.subject} · Form {book.form}
             </p>
-            <h1 className="text-balance text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-2xl">
+            <h1 className="text-balance text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
               {book.title}
             </h1>
             <p className="text-sm leading-relaxed text-muted-foreground">
               {book.description}
             </p>
-            <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+            <p className="text-sm font-semibold text-slate-900">
               KES{" "}
               <span className="tabular-nums">
                 {book.price.toLocaleString("en-KE", {

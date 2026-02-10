@@ -30,7 +30,7 @@ export default function BlogPage() {
             key={post.slug}
             className="rounded-lg border border-border-subtle bg-background/60 p-4 transition hover:bg-background"
           >
-            <h2 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-base">
+            <h2 className="text-sm font-semibold tracking-tight text-slate-900 sm:text-base">
               {post.title}
             </h2>
             <p className="mt-1 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">

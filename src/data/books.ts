@@ -17,7 +17,7 @@ export const books: Book[] = [
     price: 850,
     description:
       "Topic–by–topic Form 4 maths revision with worked KCSE-style questions, model answers, and visual summaries for each subtopic.",
-    coverImagePath: "https://images.pexels.com/photos/3768126/pexels-photo-3768126.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-chemistry-form-3-visual-notes",
@@ -27,7 +27,7 @@ export const books: Book[] = [
     price: 920,
     description:
       "Structured Form 3 chemistry notes built from real KCSE past papers, focusing on experiments, equations, and common traps.",
-    coverImagePath: "https://images.pexels.com/photos/8533140/pexels-photo-8533140.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-english-form-2-comprehension-practice",
@@ -37,7 +37,7 @@ export const books: Book[] = [
     price: 780,
     description:
       "Reading passages, guided questions, and marking-scheme style notes to build Form 2 comprehension confidence.",
-    coverImagePath: "https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-biology-form-4-diagram-atlas",
@@ -47,7 +47,7 @@ export const books: Book[] = [
     price: 990,
     description:
       "An annotated atlas of must-know Form 4 biology diagrams, processes, and labelled illustrations for last-minute revision.",
-    coverImagePath: "https://images.pexels.com/photos/3760323/pexels-photo-3760323.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-physics-form-3-exam-practice",
@@ -57,7 +57,7 @@ export const books: Book[] = [
     price: 930,
     description:
       "Form 3 physics exam-style questions grouped by topic, with step-by-step solutions and examiner-style marking notes.",
-    coverImagePath: "https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-business-studies-form-4-revision-guide",
@@ -67,7 +67,7 @@ export const books: Book[] = [
     price: 800,
     description:
       "Concise notes and KCSE-style questions covering key Form 4 business concepts, case studies, and structured essay practice.",
-    coverImagePath: "https://images.pexels.com/photos/590570/pexels-photo-590570.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-history-form-2-topic-notes",
@@ -77,7 +77,7 @@ export const books: Book[] = [
     price: 760,
     description:
       "Organised topic notes and short-answer questions for Form 2 History & Government, aligned with KCSE trends and verbs.",
-    coverImagePath: "https://images.pexels.com/photos/3494806/pexels-photo-3494806.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
   {
     slug: "kcse-cre-form-4-chapter-review",
@@ -87,7 +87,7 @@ export const books: Book[] = [
     price: 720,
     description:
       "Chapter-by-chapter review questions and essay prompts for Form 4 C.R.E., with guidance on structuring KCSE-style answers.",
-    coverImagePath: "https://images.pexels.com/photos/3772620/pexels-photo-3772620.jpeg?auto=compress&cs=tinysrgb&w=800",
+    coverImagePath: "/placeholder-book.svg",
   },
 ];
 
