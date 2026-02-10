@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "@/contexts/CartContext";
 import { Book } from "@/data/books";
+import { addToCartStore } from "@/lib/cart-store";
 import { useState } from "react";
 
 type BookCardWithCartProps = {
@@ -11,15 +11,15 @@ type BookCardWithCartProps = {
 };
 
 export function BookCardWithCart({ book }: BookCardWithCartProps) {
-  const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isAdding) return;
     setIsAdding(true);
-    addToCart(book);
-    setTimeout(() => setIsAdding(false), 500);
+    addToCartStore(book);
+    setTimeout(() => setIsAdding(false), 400);
   };
 
   return (
@@ -64,9 +64,11 @@ export function BookCardWithCart({ book }: BookCardWithCartProps) {
               View
             </Link>
             <button
+              type="button"
               onClick={handleAddToCart}
+              onPointerDown={(e) => e.stopPropagation()}
               disabled={isAdding}
-              className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-3 py-1.5 text-[0.7rem] font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 disabled:opacity-50"
+              className="touch-manipulation cursor-pointer min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-slate-900 px-3 py-1.5 text-[0.7rem] font-semibold tracking-wide text-slate-50 shadow-sm transition-colors hover:bg-slate-800 disabled:opacity-50"
             >
               {isAdding ? 'Added!' : 'Add'}
             </button>

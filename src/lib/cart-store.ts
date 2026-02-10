@@ -25,8 +25,12 @@ function getCookie(name: string): string | null {
 
 function setCookie(name: string, value: string) {
   if (typeof document === 'undefined') return;
-  const maxAge = COOKIE_DAYS * 24 * 60 * 60;
-  document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${maxAge};SameSite=Lax`;
+  try {
+    const maxAge = COOKIE_DAYS * 24 * 60 * 60;
+    document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${maxAge};SameSite=Lax`;
+  } catch {
+    // Cookie may fail in some environments; in-memory cart still works
+  }
 }
 
 function getBookBySlug(slug: string): Book | undefined {
@@ -52,8 +56,12 @@ function loadFromCookie(): CartItem[] {
 }
 
 function persist() {
-  const compact = cart.map(({ slug, quantity }) => ({ s: slug, q: quantity }));
-  setCookie(CART_COOKIE, JSON.stringify(compact));
+  try {
+    const compact = cart.map(({ slug, quantity }) => ({ s: slug, q: quantity }));
+    setCookie(CART_COOKIE, JSON.stringify(compact));
+  } catch {
+    // Keep in-memory cart working even if cookie fails
+  }
 }
 
 function notify() {
@@ -81,6 +89,7 @@ export function subscribeCart(listener: Listener): () => void {
 }
 
 export function addToCartStore(book: Book) {
+  if (!book?.slug) return;
   const existing = cart.find((i) => i.slug === book.slug);
   if (existing) {
     cart = cart.map((i) =>

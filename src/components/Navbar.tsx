@@ -82,7 +82,7 @@ export function Navbar() {
           aria-label="Close menu"
         />
         <aside
-          className="fixed inset-y-0 right-0 z-[101] flex w-[min(100vw,280px)] flex-col border-l border-border-subtle bg-background shadow-xl transition-transform duration-200 translate-x-full peer-checked:translate-x-0 sm:hidden"
+          className="pointer-events-auto fixed inset-y-0 right-0 z-[101] flex w-[min(100vw,280px)] flex-col border-l border-border-subtle bg-background shadow-xl transition-transform duration-200 translate-x-full peer-checked:translate-x-0 sm:hidden"
           aria-label="Menu"
         >
           <div className="flex justify-end p-3">
